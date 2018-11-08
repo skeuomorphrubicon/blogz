@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}                          
+{% with messages = get_flashed_messages() %}
+    <h1>New Post!</h1>
+    {% if messages %}
+    <ul class='flashes'>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    <form action='/newpost' method='POST'>
+        <label>
+            Title:<br>
+            <input type="text" name='blog_title' value='{{ blog_title }}' />
+        </label>
+        <br>
+        <label>
+            Body:<br>
+        <input type="text" name='blog_body' value='{{ blog_body }}' />
+        </label>
+        <br><br>
+        <input type="submit" value='Submit Post' />
+    </form>
+
+{% endblock %}
