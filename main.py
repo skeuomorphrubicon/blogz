@@ -1,23 +1,19 @@
-# imports
-
 from flask import Flask, request, redirect, render_template, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from hashutils import make_pw_hash, check_pw_hash
-
-# flask and db setup
+from datetime import datetime
 
 app = Flask(__name__)
-app.config['DEBUG'] = True      # displays runtime errors in the browser, too
+app.config['DEBUG'] = True 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://blogz:blogzpassword@localhost:8889/blogz'
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 app.secret_key = 'y337kGcys&zP3B'
 
-# universal classes
 
 class Blog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.Date, default=CurDate())
+    date = db.Column(db.DateTime, default=datetime.utcnow)
     title = db.Column(db.String(120), unique=True)
     body = db.Column(db.Text)
     owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -134,24 +130,22 @@ def post(post_id):
     return render_template(post.html, blogs=blogs)
 
 @app.route('/blog', methods=['GET'])
+@app.route('/blog/<user_id>', methods=['GET'])
 def find_user():
-    if request.args.get() == None
-        blogs = Blog.query.all()
-        return render_template(blog.html, blogs=blogs)
+    if user_id:
+        blogs = Blog.query.order_by(date).all(owner_id==user_id)
     else:
-        user_id = request.args.get('user')
-        blogs = Blog.query.all(owner_id==user_id)
-
+        blogs = Blog.query.order_by(date).all()
     return render_template(blog.html, blogs=blogs)
 
 
 @app.route('/newpost', methods=['GET', 'POST'])
 def newpost():
-    if request.method == 'GET' and session['username']
+    if request.method == 'GET' and 'username' in session:
         user = User.query.all(username==username).first()
         user_id = user.id
         return render_template('newpost.html', user_id=user_id)
-    if request.method == 'POST':
+    if request.method == 'POST' and 'username' in session:
         post_title = request.form['blog_title']
         post_body = request.form['blog_body']
         if not post_title:
@@ -167,8 +161,9 @@ def newpost():
         blogs = Blog.query.order_by(date).all(owner_id==user_id)
         return render_template('post.html', blogs=blogs)
 
-# main check
 
-
-if __name__ == '__main__':
+def main():
     app.run()
+
+if __name__ == "__main__":
+    main()
