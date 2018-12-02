@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% with unerrors = get_flashed_messages(category_filter=["unerror"])}
+{% with pwerrors = get_flashed_messages(category_filter=["pwerror"])}
+{% with vpwerrors = get_flashed_messages(category_filter=["vpwerror"])}
+<h1>Sign-up to start blogging!</h1>
+<form action="/" method="POST">
+    Username:<br>
+    {% for message in unerrors %}
+    <ul>
+        <li>{{message}}</li>
+    </ul><br>
+    {% endfor %}
+    <input type="text" name="username" value="{username}"><br>
+    Password:<br>
+    {% for message in pwerrors %}
+    <ul>
+        <li>{{message}}</li>
+    </ul><br>
+    {% endfor %}
+    <input type="password" name="password"><br>
+    Verify Password:<br>
+    {% for message in vpwerrors %}
+    <ul>
+        <li>{{message}}</li>
+    </ul><br>
+    {$ endfor %}
+    <input="password" name="verify"><br>
+    <input type="submit" name="submit" value="Submit">
+</form>
+{% endblock %}

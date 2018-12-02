@@ -4,10 +4,15 @@
 
     <hr />
         <ul>
-            {% for post in posts %}
+            {% for post in blogs %}
             <li>
+                <a href="/blog?id={{blog.id}}">{{blog.title}}</a>
+            </li>
+            <li>
+                Written by: <a href="/blog?user={{blog.owner_id}}">{{blog.owner}}</a>
+            </li>
                 <p>
-                    <a href="./blog?id={{post_id}}">{{post_title}}</a>
+                    {% blog.body %}
                 </p>
             </li>
             {% endfor %}

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Log in to Blogz!</h1>
+<p>If you don't have an account, you may <a href="/signup">sign-up</a> for one.</p>
+{% with errors = get_flashed_messages(category_filter=["error"]) %}
+{% if errors %}
+<div class="alert-message block-message error"></div>
+    <ul>
+        {% for msg in errors %}
+        <li>{{ msg }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% endwith %}
+
+{% with success = get_flashed_messages(category_filter=['success']) %}
+{% if success %}
+{% for msg in success %}
+    <h2>{{ msg }}</h2>
+{% endfor %}
+{% endif %}
+{% endwith %}
+<form action="/login" method="post">
+    <table>
+        <tr>
+            <td><label for="username">Username</label></td>
+            <td>
+                <input name="username" type="text" value="{{ username }}">
+            </td>
+        </tr>
+        <tr>
+            <td><label for="password">Password</label></td>
+            <td>
+                <input name="password" type="password">
+            </td>
+        </tr>
+    </table>
+    <input type="submit" value="Login">
+</form>
+{% endblock %}

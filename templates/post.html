@@ -1,7 +1,17 @@
-{% extends base.html}
+{% extends "base.html" %}
 {% block content %}
-<h2>{{ blog_title }}</h2><br>
-    <p><br>
-        {{ blog_body }}
+
+{% for blog in blogs %}
+
+
+<h2>{{ blog.title }}</h2><br>
+    <p>
+        Written by: {{ blog.owner }}
     </p>
+    <p><br>
+        {{ blog.body }}
+    </p>
+
+
+{% endfor %}
 {% endblock %}
